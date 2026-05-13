@@ -1,0 +1,63 @@
+# Jwell PHP Backend – Apache rewrite rules
+# Enables clean URLs identical to the original Node.js routes
+
+Options -Indexes
+RewriteEngine On
+
+# Allow CORS preflight globally
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ $1 [R=204,L]
+
+# ─── Admin routes ──────────────────────────────────────────────
+RewriteRule ^api/admin/create$         api/admin/create.php     [L,QSA]
+RewriteRule ^api/admin/login$          api/admin/login.php      [L,QSA]
+RewriteRule ^api/admin/logout$         api/admin/logout.php     [L,QSA]
+RewriteRule ^api/admin/dashboard$      api/admin/dashboard.php  [L,QSA]
+
+# ─── Customer routes ───────────────────────────────────────────
+RewriteRule ^api/customer$                         api/customer/index.php          [L,QSA]
+RewriteRule ^api/customer/existing$                api/customer/existing.php       [L,QSA]
+RewriteRule ^api/customer/next-item-code$          api/customer/next_item_code.php [L,QSA]
+RewriteRule ^api/customer/monthly-customer-count$  api/customer/monthly_count.php  [L,QSA]
+RewriteRule ^api/customer/dashboard/stats$         api/customer/dashboard_stats.php [L,QSA]
+RewriteRule ^api/customer/logout$                  api/customer/index.php          [L,QSA]
+
+# Customer restore-item: PUT /api/customer/restore-item/:customerId/:itemCode
+RewriteRule ^api/customer/restore-item/([^/]+)/([^/]+)$ api/customer/restore_item.php?customerId=$1&itemCode=$2 [L,QSA]
+
+# Customer restore: PUT /api/customer/restore/:id
+RewriteRule ^api/customer/restore/([^/]+)$         api/customer/restore.php?id=$1  [L,QSA]
+
+# Invoice: GET /api/customer/invoice/:customerId/:itemCode
+RewriteRule ^api/customer/invoice/([^/]+)/([^/]+)$ api/customer/invoice.php?customerId=$1&itemCode=$2 [L,QSA]
+
+# Close loan: POST /api/customer/customer/:customerId/item/:itemCode/close-loan
+RewriteRule ^api/customer/customer/([^/]+)/item/([^/]+)/close-loan$ api/customer/close_loan.php?customerId=$1&itemCode=$2 [L,QSA]
+
+# Item detail: GET /api/customer/:customerId/item/:itemCode
+RewriteRule ^api/customer/([^/]+)/item/([^/]+)$    api/customer/item_detail.php?customerId=$1&itemCode=$2 [L,QSA]
+
+# Upload: POST /api/customer/upload/:id
+RewriteRule ^api/customer/upload/([^/]+)$          api/customer/upload_image.php?id=$1 [L,QSA]
+
+# Customer by id: GET/PUT/DELETE /api/customer/:id
+RewriteRule ^api/customer/([^/]+)$                 api/customer/detail.php?id=$1   [L,QSA]
+
+# ─── Interest routes ───────────────────────────────────────────
+RewriteRule ^api/interests$                              api/interests/index.php       [L,QSA]
+RewriteRule ^api/interests/single/([^/]+)$              api/interests/detail.php?id=$1 [L,QSA]
+RewriteRule ^api/interests/summary/([^/]+)/([^/]+)$     api/interests/summary.php?customerId=$1&itemCode=$2 [L,QSA]
+RewriteRule ^api/interests/([^/]+)$                     api/interests/by_customer.php?customerId=$1 [L,QSA]
+
+# ─── Jewellery routes ──────────────────────────────────────────
+RewriteRule ^api/jewellery/summary$                api/jewellery/summary.php        [L,QSA]
+RewriteRule ^api/jewellery/([^/]+)/add$            api/jewellery/add.php?customerId=$1 [L,QSA]
+
+# ─── Stats routes ──────────────────────────────────────────────
+RewriteRule ^api/stats/loan-by-item$          api/stats/loan_by_item.php       [L,QSA]
+RewriteRule ^api/stats/loan-gold-by-item$     api/stats/loan_gold_by_item.php  [L,QSA]
+RewriteRule ^api/stats/monthly-interest$      api/stats/monthly_interest.php   [L,QSA]
+RewriteRule ^api/stats/item-distribution$     api/stats/item_distribution.php  [L,QSA]
+
+# Static uploads
+RewriteRule ^uploads/(.*)$  uploads/$1 [L]
