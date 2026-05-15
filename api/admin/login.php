@@ -35,4 +35,13 @@ if (!password_verify($password, $admin['Password'])) {
 
 $_SESSION['adminId'] = $admin['id'];
 
-sendResponse(['message' => 'Admin logged in successfully']);
+sendResponse([
+    'message' => 'Admin logged in successfully',
+    'admin'   => [
+        'id'    => (int) $admin['id'],
+        'name'  => $admin['Name']  ?? ($admin['FirstName'] . ' ' . $admin['LastName']),
+        'email' => $admin['Email'] ?? null,
+        'phone' => $admin['Phone'] ?? null,
+        'role'  => $admin['Role']  ?? 'admin',
+    ],
+]);

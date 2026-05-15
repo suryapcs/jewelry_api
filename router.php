@@ -33,6 +33,7 @@ $routes = [
     ['GET',  '#^/api/customer/next-item-code$#',         'api/customer/next_item_code.php'],
     ['GET',  '#^/api/customer/monthly-customer-count$#', 'api/customer/monthly_count.php'],
     ['GET',  '#^/api/customer/dashboard/stats$#',        'api/customer/dashboard_stats.php'],
+    ['GET',  '#^/api/customer/dashboard_stats$#',        'api/customer/dashboard_stats.php'],
 
     // Upload
     ['POST', '#^/api/customer/upload/([^/]+)$#', 'api/customer/upload_image.php', ['id' => 1]],
