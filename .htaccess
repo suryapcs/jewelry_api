@@ -4,9 +4,7 @@
 Options -Indexes
 RewriteEngine On
 
-# Allow CORS preflight globally
-RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^(.*)$ $1 [R=204,L]
+# CORS preflight is handled by PHP scripts via helpers/cors.php
 
 # ─── Admin routes ──────────────────────────────────────────────
 RewriteRule ^api/admin/create$         api/admin/create.php     [L,QSA]
