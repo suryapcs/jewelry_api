@@ -12,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError('Method not allowed', 405);
 }
 
-$body = json_decode(file_get_contents('php://input'), true);
+$body = json_decode(file_get_contents('php://input'), true) ?? [];
 
-$name     = trim($body['Name']     ?? '');
-$email    = trim($body['Email']    ?? '');
-$phone    = trim($body['Phone']    ?? '');
-$password = $body['Password']      ?? '';
+$name     = trim($body['Name']     ?? $body['name']     ?? '');
+$email    = trim($body['Email']    ?? $body['email']    ?? '');
+$phone    = trim($body['Phone']    ?? $body['phone']    ?? '');
+$password = $body['Password']      ?? $body['password'] ?? '';
 
 // ── Validation ──────────────────────────────────────────────
 if (strlen($name) < 2 || strlen($name) > 100) {

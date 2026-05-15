@@ -13,16 +13,25 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     sendError('Method not allowed', 405);
 }
 
-$body    = json_decode(file_get_contents('php://input'), true);
-$email   = trim($body['Email']    ?? '');
-$password = $body['Password'] ?? '';
+$body = json_decode(file_get_contents('php://input'), true) ?? [];
 
-if (!$email || !$password) {
-    sendError('Please provide both email and password', 400);
+// Support both PascalCase and lowercase
+$email    = trim($body['Email']    ?? $body['email']    ?? '');
+$phone    = trim($body['Phone']    ?? $body['phone']    ?? '');
+$password = $body['Password'] ?? $body['password'] ?? '';
+
+if ((empty($email) && empty($phone)) || empty($password)) {
+    sendError('Please provide Email/Phone and Password', 400);
 }
 
-$stmt = $pdo->prepare('SELECT * FROM admins WHERE Email = ?');
-$stmt->execute([$email]);
+if (!empty($email)) {
+    $stmt = $pdo->prepare('SELECT * FROM admins WHERE Email = ?');
+    $stmt->execute([$email]);
+} else {
+    $stmt = $pdo->prepare('SELECT * FROM admins WHERE Phone = ?');
+    $stmt->execute([$phone]);
+}
+
 $admin = $stmt->fetch();
 
 if (!$admin) {
@@ -39,7 +48,7 @@ sendResponse([
     'message' => 'Admin logged in successfully',
     'admin'   => [
         'id'    => (int) $admin['id'],
-        'name'  => $admin['Name']  ?? ($admin['FirstName'] . ' ' . $admin['LastName']),
+        'name'  => $admin['Name']  ?? (($admin['FirstName'] ?? '') . ' ' . ($admin['LastName'] ?? '')),
         'email' => $admin['Email'] ?? null,
         'phone' => $admin['Phone'] ?? null,
         'role'  => $admin['Role']  ?? 'admin',
