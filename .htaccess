@@ -6,6 +6,7 @@ RewriteEngine On
 
 # CORS preflight is handled by PHP scripts via helpers/cors.php
 
+
 # ─── Admin routes ──────────────────────────────────────────────
 RewriteRule ^api/admin/create$         api/admin/create.php     [L,QSA]
 RewriteRule ^api/admin/login$          api/admin/login.php      [L,QSA]

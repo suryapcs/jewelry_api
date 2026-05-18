@@ -3,9 +3,9 @@
 // POST /api/admin/create
 // Body: { Name, Email|Phone, Password }
 
+require_once __DIR__ . '/../../helpers/cors.php';
 require_once __DIR__ . '/../../config/env.php';
 require_once __DIR__ . '/../../config/db.php';
-require_once __DIR__ . '/../../helpers/cors.php';
 require_once __DIR__ . '/../../helpers/response.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
