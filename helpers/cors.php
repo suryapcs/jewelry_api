@@ -10,11 +10,7 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-W
 
 // 2. Define allowed origins
 $allowedOrigins = [
-    getenv('CLIENT_URL') ?: 'http://localhost:3000',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'http://127.0.0.1:3000',
-    'https://pcstech.in',
+    getenv('CLIENT_URL') ?: 'https://pcstech.in',
 ];
 
 // 3. Match origin
