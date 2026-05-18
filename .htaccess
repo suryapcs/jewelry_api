@@ -4,8 +4,20 @@
 Options -Indexes
 RewriteEngine On
 
-# CORS preflight is handled by PHP scripts via helpers/cors.php
+<IfModule mod_headers.c>
+    # Dynamically set Access-Control-Allow-Origin to the request origin
+    SetEnvIf Origin "^(.*)$" HTTP_ORIGIN=$1
+    Header always set Access-Control-Allow-Origin "%{HTTP_ORIGIN}e" env=HTTP_ORIGIN
+    Header always set Access-Control-Allow-Credentials "true"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept"
+</IfModule>
 
+# Handle CORS preflight OPTIONS requests immediately
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ blank.php [R=200,L,E=HTTP_ORIGIN:%{HTTP:Origin}]
+
+# CORS preflight is also handled by PHP scripts via helpers/cors.php (fallback)
 
 # ─── Admin routes ──────────────────────────────────────────────
 RewriteRule ^api/admin/create$         api/admin/create.php     [L,QSA]
