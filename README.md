@@ -79,7 +79,7 @@ DB_HOST=localhost
 DB_NAME=jwelleryshop
 DB_USER=root
 DB_PASS=your_mysql_password
-CLIENT_URL=http://localhost:3000
+CLIENT_URL=https://pcstech.in
 ```
 
 ### 4. Create First Admin

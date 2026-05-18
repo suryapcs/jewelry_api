@@ -22,7 +22,7 @@ if (in_array($origin, $allowedOrigins, true)) {
 } else {
     // Fallback to first allowed origin for safety when no origin header or mismatch
     // (Note: * is not allowed with Allow-Credentials: true)
-    header("Access-Control-Allow-Origin: " . ($allowedOrigins[0] ?? 'http://localhost:3000'));
+    header("Access-Control-Allow-Origin: " . ($allowedOrigins[0] ?? 'https://pcstech.in'));
 }
 
 // Handle preflight
