@@ -1,23 +1,21 @@
 # Jwell PHP Backend – Apache rewrite rules
 # Enables clean URLs identical to the original Node.js routes
 
-Options -Indexes
+Options -Indexes -MultiViews
 RewriteEngine On
 
-<IfModule mod_headers.c>
-    # Dynamically set Access-Control-Allow-Origin to the request origin
-    SetEnvIf Origin "^(.*)$" HTTP_ORIGIN=$1
-    Header always set Access-Control-Allow-Origin "%{HTTP_ORIGIN}e" env=HTTP_ORIGIN
-    Header always set Access-Control-Allow-Credentials "true"
-    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With, Accept"
-</IfModule>
-
-# Handle CORS preflight OPTIONS requests immediately
+# ─── CORS & Preflight Handling ──────────────────────────────────
+# Always pass through OPTIONS requests (preflight) without redirect
 RewriteCond %{REQUEST_METHOD} OPTIONS
-RewriteRule ^(.*)$ blank.php [R=200,L,E=HTTP_ORIGIN:%{HTTP:Origin}]
+RewriteRule ^(.*)$ - [L]
 
-# CORS preflight is also handled by PHP scripts via helpers/cors.php (fallback)
+# Disable DirectorySlash to prevent trailing slash redirects
+DirectorySlash Off
+
+# Skip rewrites for actual files and directories
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
 
 # ─── Admin routes ──────────────────────────────────────────────
 RewriteRule ^api/admin/create$         api/admin/create.php     [L,QSA]

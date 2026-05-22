@@ -30,6 +30,7 @@ $routes = [
 
     // Customer – specific routes FIRST (before /:id catch-all)
     ['GET',  '#^/api/customer/existing$#',               'api/customer/existing.php'],
+    ['GET',  '#^/api/customer/next-item-code/([^/]+)$#', 'api/customer/next_item_code.php', ['customerId'=>1]],
     ['GET',  '#^/api/customer/next-item-code$#',         'api/customer/next_item_code.php'],
     ['GET',  '#^/api/customer/monthly-customer-count$#', 'api/customer/monthly_count.php'],
     ['GET',  '#^/api/customer/dashboard/stats$#',        'api/customer/dashboard_stats.php'],
